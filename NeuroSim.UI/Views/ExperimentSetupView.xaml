@@ -1,0 +1,160 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/ExperimentSetupView.xaml -->
+<UserControl x:Class="NeuroSim.UI.Views.ExperimentSetupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="Segoe UI">
+
+    <StackPanel Margin="0">
+
+        <!-- Section header -->
+        <Border Style="{StaticResource SectionHeader}">
+            <TextBlock Text="Experiment Setup" Style="{StaticResource H2}"/>
+        </Border>
+
+        <StackPanel Margin="16,12">
+
+            <!-- ── Genome Type ──────────────────────────────────────── -->
+            <TextBlock Text="GENOME TYPE" Style="{StaticResource Label}"/>
+            <ComboBox ItemsSource="{Binding GenomeTypes}"
+                      SelectedItem="{Binding SelectedGenomeType}"
+                      Margin="0,4,0,0"/>
+
+            <!-- ── Genome Length (Binary) ──────────────────────────── -->
+            <StackPanel Visibility="{Binding ShowBinaryParams, Converter={StaticResource BoolToVisibility}}"
+                        Margin="0,12,0,0">
+                <TextBlock Text="GENOME LENGTH" Style="{StaticResource Label}"/>
+                <TextBox Text="{Binding GenomeLength, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- ── Real-valued params ────────────────────────────────── -->
+            <StackPanel Visibility="{Binding ShowRealParams, Converter={StaticResource BoolToVisibility}}"
+                        Margin="0,12,0,0">
+                <TextBlock Text="DIMENSIONS" Style="{StaticResource Label}"/>
+                <TextBox Text="{Binding GenomeLength, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+                <Grid Margin="0,6,0,0">
+                    <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="MIN" Style="{StaticResource Label}"/>
+                        <TextBox Text="{Binding RealMin, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                        <TextBlock Text="MAX" Style="{StaticResource Label}"/>
+                        <TextBox Text="{Binding RealMax, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <!-- ── Tree params ───────────────────────────────────────── -->
+            <StackPanel Visibility="{Binding ShowTreeParams, Converter={StaticResource BoolToVisibility}}"
+                        Margin="0,12,0,0">
+                <TextBlock Text="VARIABLES" Style="{StaticResource Label}"/>
+                <TextBox Text="{Binding TreeVariables, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+                <TextBlock Text="MAX TREE DEPTH" Style="{StaticResource Label}" Margin="0,8,0,0"/>
+                <Slider Value="{Binding MaxTreeDepth}" Minimum="2" Maximum="10" TickPlacement="BottomRight"
+                        TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,4,0,0"/>
+                <TextBlock Text="{Binding MaxTreeDepth}" Style="{StaticResource Label}" HorizontalAlignment="Right"/>
+            </StackPanel>
+
+            <!-- ── Graph params ──────────────────────────────────────── -->
+            <StackPanel Visibility="{Binding ShowGraphParams, Converter={StaticResource BoolToVisibility}}"
+                        Margin="0,12,0,0">
+                <TextBlock Text="NUMBER OF NODES" Style="{StaticResource Label}"/>
+                <TextBox Text="{Binding GraphNodes, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+                <CheckBox Content="Directed graph" IsChecked="{Binding GraphDirected}"
+                          Foreground="{StaticResource TextPrimaryBrush}" Margin="0,8,0,0"/>
+            </StackPanel>
+
+            <Separator Background="{StaticResource BorderBrush}" Margin="0,12"/>
+
+            <!-- ── Population ────────────────────────────────────────── -->
+            <TextBlock Text="POPULATION" Style="{StaticResource Label}"/>
+            <Grid Margin="0,6,0,0">
+                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="SIZE" Style="{StaticResource Label}"/>
+                    <TextBox Text="{Binding PopulationSize, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                    <TextBlock Text="MAX GENERATIONS" Style="{StaticResource Label}"/>
+                    <TextBox Text="{Binding MaxGenerations, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Grid>
+            <TextBlock Text="{Binding EliteRatio, StringFormat='ELITE RATIO  {0:P0}'}" Style="{StaticResource Label}" Margin="0,8,0,0"/>
+            <Slider Value="{Binding EliteRatio}" Minimum="0" Maximum="0.5"
+                    TickFrequency="0.05" IsSnapToTickEnabled="True" Margin="0,4,0,0"/>
+
+            <Separator Background="{StaticResource BorderBrush}" Margin="0,12"/>
+
+            <!-- ── Selection ─────────────────────────────────────────── -->
+            <TextBlock Text="SELECTION" Style="{StaticResource Label}"/>
+            <ComboBox ItemsSource="{Binding SelectionTypes}"
+                      SelectedItem="{Binding SelectedSelectionType}"
+                      Margin="0,4,0,0"/>
+            <TextBlock Text="{Binding TournamentSize, StringFormat='TOURNAMENT SIZE  {0}'}" Style="{StaticResource Label}" Margin="0,8,0,0"/>
+            <Slider Value="{Binding TournamentSize}" Minimum="2" Maximum="20" IsSnapToTickEnabled="True" Margin="0,4,0,0"/>
+
+            <Separator Background="{StaticResource BorderBrush}" Margin="0,12"/>
+
+            <!-- ── Crossover ─────────────────────────────────────────── -->
+            <TextBlock Text="CROSSOVER" Style="{StaticResource Label}"/>
+            <ComboBox ItemsSource="{Binding BinaryCrossoverTypes}"
+                      SelectedItem="{Binding SelectedBinaryCrossover}"
+                      Margin="0,4,0,0"
+                      Visibility="{Binding ShowBinaryParams, Converter={StaticResource BoolToVisibility}}"/>
+            <ComboBox ItemsSource="{Binding RealCrossoverTypes}"
+                      SelectedItem="{Binding SelectedRealCrossover}"
+                      Margin="0,4,0,0"
+                      Visibility="{Binding ShowRealParams, Converter={StaticResource BoolToVisibility}}"/>
+            <TextBlock Text="(Subtree Crossover)" Style="{StaticResource Label}" Margin="0,4,0,0"
+                       Visibility="{Binding ShowTreeParams, Converter={StaticResource BoolToVisibility}}"/>
+            <TextBlock Text="(Edge Uniform Crossover)" Style="{StaticResource Label}" Margin="0,4,0,0"
+                       Visibility="{Binding ShowGraphParams, Converter={StaticResource BoolToVisibility}}"/>
+
+            <TextBlock Text="{Binding CrossoverRate, StringFormat='CROSSOVER RATE  {0:P0}'}" Style="{StaticResource Label}" Margin="0,8,0,0"/>
+            <Slider Value="{Binding CrossoverRate}" Minimum="0" Maximum="1" TickFrequency="0.05" Margin="0,4,0,0"/>
+
+            <Separator Background="{StaticResource BorderBrush}" Margin="0,12"/>
+
+            <!-- ── Mutation ───────────────────────────────────────────── -->
+            <TextBlock Text="MUTATION" Style="{StaticResource Label}"/>
+            <TextBlock Text="(Flip-Bit)" Style="{StaticResource Label}" Margin="0,4,0,0"
+                       Visibility="{Binding ShowBinaryParams, Converter={StaticResource BoolToVisibility}}"/>
+            <ComboBox ItemsSource="{Binding RealMutationTypes}"
+                      SelectedItem="{Binding SelectedRealMutation}"
+                      Margin="0,4,0,0"
+                      Visibility="{Binding ShowRealParams, Converter={StaticResource BoolToVisibility}}"/>
+            <TextBlock Text="(Subtree Mutation)" Style="{StaticResource Label}" Margin="0,4,0,0"
+                       Visibility="{Binding ShowTreeParams, Converter={StaticResource BoolToVisibility}}"/>
+            <TextBlock Text="(Edge Toggle)" Style="{StaticResource Label}" Margin="0,4,0,0"
+                       Visibility="{Binding ShowGraphParams, Converter={StaticResource BoolToVisibility}}"/>
+            <TextBlock Text="{Binding MutationRate, StringFormat='MUTATION RATE  {0:P2}'}" Style="{StaticResource Label}" Margin="0,8,0,0"/>
+            <Slider Value="{Binding MutationRate}" Minimum="0" Maximum="0.5" TickFrequency="0.005" Margin="0,4,0,0"/>
+
+            <Separator Background="{StaticResource BorderBrush}" Margin="0,12"/>
+
+            <!-- ── Fitness Function ───────────────────────────────────── -->
+            <TextBlock Text="FITNESS FUNCTION" Style="{StaticResource Label}"/>
+            <ComboBox ItemsSource="{Binding FitnessOptions}"
+                      SelectedItem="{Binding SelectedFitness}"
+                      Margin="0,4,0,0"/>
+
+            <Separator Background="{StaticResource BorderBrush}" Margin="0,12"/>
+
+            <!-- ── Termination ────────────────────────────────────────── -->
+            <TextBlock Text="TERMINATION" Style="{StaticResource Label}"/>
+            <CheckBox Content="Stop at target fitness" IsChecked="{Binding UseTargetFitness}"
+                      Foreground="{StaticResource TextPrimaryBrush}" Margin="0,6,0,0"/>
+            <StackPanel Visibility="{Binding UseTargetFitness, Converter={StaticResource BoolToVisibility}}"
+                        Margin="0,6,0,0">
+                <TextBlock Text="TARGET FITNESS" Style="{StaticResource Label}"/>
+                <TextBox Text="{Binding TargetFitness, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <Separator Background="{StaticResource BorderBrush}" Margin="0,12"/>
+
+            <TextBlock Text="RANDOM SEED" Style="{StaticResource Label}"/>
+            <TextBox Text="{Binding RandomSeed, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,16"/>
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>

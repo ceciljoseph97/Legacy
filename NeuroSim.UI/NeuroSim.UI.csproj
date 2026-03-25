@@ -1,0 +1,24 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/NeuroSim.UI.csproj -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>NeuroSim.UI</AssemblyName>
+    <RootNamespace>NeuroSim.UI</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NeuroSim.Engine\NeuroSim.Engine.csproj" />
+    <ProjectReference Include="..\NeuroSim.Problems\NeuroSim.Problems.csproj" />
+  </ItemGroup>
+
+</Project>

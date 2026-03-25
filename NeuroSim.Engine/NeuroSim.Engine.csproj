@@ -1,0 +1,12 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.Engine/NeuroSim.Engine.csproj -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>NeuroSim.Engine</AssemblyName>
+    <RootNamespace>NeuroSim.Engine</RootNamespace>
+  </PropertyGroup>
+</Project>

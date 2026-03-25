@@ -1,0 +1,14 @@
+# AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.Python/pyproject.toml
+[build-system]
+requires = ["scikit-build-core>=0.8", "pybind11>=2.12"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "neurosim"
+version = "1.0.0"
+description = "NeuroSim: Genetic & Evolutionary Simulation Framework"
+requires-python = ">=3.10"
+
+[tool.scikit-build]
+cmake.build-type = "Release"
+cmake.args = ["-DNEUROSIM_BUILD_PYTHON=ON"]

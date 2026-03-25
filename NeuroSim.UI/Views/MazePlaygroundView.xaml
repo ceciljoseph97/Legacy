@@ -1,0 +1,316 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/MazePlaygroundView.xaml -->
+<UserControl x:Class="NeuroSim.UI.Views.MazePlaygroundView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:local="clr-namespace:NeuroSim.UI.Views">
+
+    <UserControl.Resources>
+        <Style x:Key="Lbl" TargetType="TextBlock">
+            <Setter Property="Foreground"  Value="#475569"/>
+            <Setter Property="FontSize"    Value="10"/>
+            <Setter Property="FontWeight"  Value="SemiBold"/>
+            <Setter Property="Margin"      Value="0,0,0,4"/>
+        </Style>
+        <Style x:Key="StatCard" TargetType="Border">
+            <Setter Property="Background"      Value="#111118"/>
+            <Setter Property="BorderBrush"     Value="#252535"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius"    Value="6"/>
+            <Setter Property="Padding"         Value="10,8"/>
+        </Style>
+        <Style x:Key="DarkTab" TargetType="TabControl">
+            <Setter Property="Background"      Value="#09090F"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding"         Value="0"/>
+        </Style>
+        <Style x:Key="DarkTabItem" TargetType="TabItem">
+            <Setter Property="Background"      Value="Transparent"/>
+            <Setter Property="Foreground"      Value="#64748B"/>
+            <Setter Property="FontSize"        Value="12"/>
+            <Setter Property="Padding"         Value="16,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Bd" Background="Transparent"
+                                BorderThickness="0,0,0,2" BorderBrush="Transparent"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#22C55E"/>
+                                <Setter Property="Foreground" Value="#F1F5F9"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="#CBD5E1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <!-- MazeCanvas: transparent background for hit-testing, no template chrome -->
+        <Style TargetType="local:MazeCanvas">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:MazeCanvas">
+                        <Border Background="{TemplateBinding Background}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#09090F">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" MinWidth="220" MaxWidth="290"/>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ── LEFT CONFIG PANEL ───────────────────────────────────────── -->
+        <Border Grid.Column="0" Background="#0D0D16"
+                BorderBrush="#1A1A2E" BorderThickness="0,0,1,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14,14,10,14">
+                <StackPanel>
+
+                    <TextBlock Text="MAZE SOLVER" Foreground="#22C55E"
+                               FontSize="11" FontWeight="Bold" Margin="0,0,0,14"/>
+
+                    <!-- Preset -->
+                    <TextBlock Text="MAZE PRESET" Style="{StaticResource Lbl}"/>
+                    <ComboBox ItemsSource="{Binding MazePresets}"
+                              SelectedItem="{Binding SelectedPreset}"
+                              Margin="0,0,0,10" IsEnabled="{Binding IsEditable}"/>
+
+                    <!-- Maze info -->
+                    <Border Background="#111118" BorderBrush="#1E293B"
+                            BorderThickness="1" CornerRadius="4" Padding="8,6" Margin="0,0,0,12">
+                        <TextBlock Foreground="#94A3B8" FontSize="11">
+                            <Run Text="Size: "/>
+                            <Run Text="{Binding Maze.Width, FallbackValue='?'}" Foreground="#22C55E"/>
+                            <Run Text=" × "/>
+                            <Run Text="{Binding Maze.Height, FallbackValue='?'}" Foreground="#22C55E"/>
+                            <Run Text="   Start→Goal: (1,1) → bottom-right" Foreground="#475569"/>
+                        </TextBlock>
+                    </Border>
+
+                    <Separator Background="#1A1A28" Margin="0,0,0,10"/>
+
+                    <!-- ── PARADIGM ────────────────────────────────────── -->
+                    <TextBlock Text="PARADIGM" Style="{StaticResource Lbl}"/>
+                    <ComboBox ItemsSource="{Binding Paradigms}"
+                              SelectedItem="{Binding SelectedParadigm}"
+                              Margin="0,0,0,10" IsEnabled="{Binding IsEditable}"/>
+
+                    <!-- ── OPERATORS ───────────────────────────────────── -->
+                    <TextBlock Text="SELECTION" Style="{StaticResource Lbl}"/>
+                    <ComboBox ItemsSource="{Binding SelectionMethods}"
+                              SelectedItem="{Binding SelectedSelection}"
+                              Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="MUTATION" Style="{StaticResource Lbl}"/>
+                    <ComboBox ItemsSource="{Binding MutationMethods}"
+                              SelectedItem="{Binding SelectedMutation}"
+                              Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <!-- Crossover — hidden for ES/EP -->
+                    <StackPanel Visibility="{Binding CrossoverVisible, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="CROSSOVER" Style="{StaticResource Lbl}"/>
+                        <ComboBox ItemsSource="{Binding CrossoverMethods}"
+                                  SelectedItem="{Binding SelectedCrossover}"
+                                  Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+                    </StackPanel>
+
+                    <!-- ES strategy — visible only for ES -->
+                    <StackPanel Visibility="{Binding EsOptionsVisible, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="ES STRATEGY" Style="{StaticResource Lbl}"/>
+                        <ComboBox ItemsSource="{Binding EsStrategies}"
+                                  SelectedItem="{Binding EsStrategy}"
+                                  Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+                        <TextBlock Text="Lambda (offspring/parent)" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                        <TextBox Text="{Binding Lambda, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,10" IsEnabled="{Binding IsEditable}"/>
+                    </StackPanel>
+
+                    <Separator Background="#1A1A28" Margin="0,0,0,10"/>
+
+                    <!-- ── PARAMETERS ──────────────────────────────────── -->
+                    <TextBlock Text="PARAMETERS" Style="{StaticResource Lbl}"/>
+
+                    <TextBlock Text="Population size" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding PopulationSize, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="Max generations" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding MaxGenerations, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="Path length (max steps)" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding PathLength, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="Mutation rate" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding MutationRate, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="Crossover rate" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding CrossoverRate, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="Tournament size" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding TournamentSize, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="Random seed" Foreground="#475569" FontSize="11" Margin="0,0,0,2"/>
+                    <TextBox Text="{Binding RandomSeed, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,12" IsEnabled="{Binding IsEditable}"/>
+
+                    <Separator Background="#1A1A28" Margin="0,0,0,10"/>
+
+                    <!-- Speed -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="SPEED" Style="{StaticResource Lbl}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding SpeedLabel}" Foreground="#22C55E"
+                                   FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <Slider Minimum="0" Maximum="2000" Value="{Binding SpeedDelayMs}"
+                            TickFrequency="100" IsSnapToTickEnabled="True"
+                            Margin="0,0,0,2" Foreground="#22C55E"
+                            IsEnabled="{Binding IsEditable}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <TextBlock Text="Fast" Foreground="#334155" FontSize="9"/>
+                        <TextBlock Text="Slow" Foreground="#334155" FontSize="9"
+                                   HorizontalAlignment="Right" Margin="140,0,0,0"/>
+                    </StackPanel>
+
+                    <Separator Background="#1A1A28" Margin="0,0,0,10"/>
+
+                    <!-- Run controls -->
+                    <Button Content="▶  RUN EVOLUTION" Style="{StaticResource PrimaryButton}"
+                            Padding="0,9" FontSize="13" Command="{Binding RunCommand}"/>
+                    <Grid Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/><ColumnDefinition Width="6"/><ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="■  Stop"  Style="{StaticResource DangerButton}"
+                                Padding="0,7" FontSize="12" Command="{Binding StopCommand}"/>
+                        <Button Grid.Column="2" Content="↺  Reset" Style="{StaticResource OutlineButton}"
+                                Padding="0,7" FontSize="12" Command="{Binding ResetCommand}"/>
+                    </Grid>
+
+                    <Separator Background="#1A1A28" Margin="0,14,0,10"/>
+
+                    <!-- Progress -->
+                    <TextBlock Text="PROGRESS" Style="{StaticResource Lbl}"/>
+                    <ProgressBar Value="{Binding ProgressPct}" Maximum="100"
+                                 Height="6" Margin="0,0,0,4" Foreground="#22C55E"
+                                 Background="#1A1A28" BorderThickness="0"/>
+                    <TextBlock Foreground="#64748B" FontSize="10"
+                               Text="{Binding Status}" TextWrapping="Wrap"/>
+
+                    <Separator Background="#1A1A28" Margin="0,14,0,10"/>
+
+                    <!-- Snapshot -->
+                    <TextBlock Text="SNAPSHOT" Style="{StaticResource Lbl}"/>
+                    <TextBox Text="{Binding SnapshotName, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,8" IsEnabled="{Binding IsEditable}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/><ColumnDefinition Width="6"/><ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="💾  Save" Style="{StaticResource OutlineButton}"
+                                Padding="0,7" FontSize="12" Command="{Binding SaveSnapshotCommand}"/>
+                        <Button Grid.Column="2" Content="📂  Load" Style="{StaticResource OutlineButton}"
+                                Padding="0,7" FontSize="12" Command="{Binding LoadSnapshotCommand}"/>
+                    </Grid>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Divider -->
+        <Rectangle Grid.Column="1" Fill="#1A1A2E"/>
+
+        <!-- ── RIGHT PANEL ───────────────────────────────────────────────── -->
+        <TabControl Grid.Column="2" Style="{StaticResource DarkTab}">
+
+            <!-- ── MAZE TAB ─────────────────────────────────────────────── -->
+            <TabItem Header="Maze" Style="{StaticResource DarkTabItem}">
+                <Grid Background="#09090F">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Edit toolbar -->
+                    <Border Grid.Row="0" Background="#0D0D16" BorderBrush="#1E293B"
+                            BorderThickness="0,0,0,1" Padding="12,8" Margin="0,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Edit:" Foreground="#64748B" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <ComboBox ItemsSource="{Binding EditModes}" SelectedItem="{Binding EditMode}"
+                                      Width="120" IsEnabled="{Binding IsEditable}"/>
+                            <Button Content="New blank 15×15" Style="{StaticResource GhostButton}"
+                                    Command="{Binding NewBlankMazeCommand}" Margin="12,0,0,0"/>
+                            <Button x:Name="ExportMazeBtn" Content="💾 Export Maze" Style="{StaticResource GhostButton}"
+                                    Margin="12,0,0,0" Click="ExportMazeBtn_OnClick"/>
+                        </StackPanel>
+                    </Border>
+
+                    <local:MazeCanvas x:Name="MazeCanvasCtrl" Grid.Row="1"
+                                      Margin="16" ClipToBounds="True"/>
+
+                    <!-- Goal status + steps info -->
+                    <StackPanel Grid.Row="2" Margin="16,0,16,12">
+                        <Border Padding="10,6" Background="#0D2818" BorderBrush="#166534"
+                                BorderThickness="1" CornerRadius="4" Margin="0,0,0,6">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Goal: " Foreground="#4ADE80" FontSize="12"/>
+                                <TextBlock Text="{Binding GoalStatusStr}" Foreground="#86EFAC"
+                                           FontSize="12" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Foreground="#94A3B8" FontSize="10" TextWrapping="Wrap">
+                            <Run Text="Steps = move commands (N/E/S/W). Each step = 1 cell attempt. Path length = max steps per agent."/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- ── ANALYSIS TAB ─────────────────────────────────────────── -->
+            <TabItem Header="Analysis" Style="{StaticResource DarkTabItem}">
+                <local:PlaygroundAnalysisView StatBadges="{Binding StatBadges}"
+                                              Charts="{Binding Charts}"
+                                              DataContext="{Binding}">
+                    <local:PlaygroundAnalysisView.ExtraContent>
+                        <StackPanel>
+                        <local:GenomeDisplayView DataContext="{Binding GenomeDisplay}" Margin="0,0,0,16"/>
+                        <Border Background="#0D0D16" BorderBrush="#1E293B"
+                                BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,16,0,0">
+                            <StackPanel>
+                                <TextBlock Text="MUTATION OPERATOR GUIDE" Foreground="#475569"
+                                           FontSize="10" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                <TextBlock Foreground="#64748B" FontSize="11" TextWrapping="Wrap" LineHeight="18">
+<Run Foreground="#86EFAC" FontWeight="SemiBold">Inversion</Run><Run> — reverse a sub-sequence. Best for corridors: preserves path prefix/suffix while restructuring the middle (like 2-opt in TSP).</Run>
+<LineBreak/><LineBreak/>
+<Run Foreground="#86EFAC" FontWeight="SemiBold">SegmentShuffle</Run><Run> — shuffle a random sub-segment. Breaks stuck sub-paths without losing the moves involved.</Run>
+<LineBreak/><LineBreak/>
+<Run Foreground="#86EFAC" FontWeight="SemiBold">BlockReset</Run><Run> — overwrite a block with random moves. Aggressive diversifier — useful in ES to escape deep local optima.</Run>
+<LineBreak/><LineBreak/>
+<Run Foreground="#86EFAC" FontWeight="SemiBold">PointMutation</Run><Run> — replace individual genes randomly. Broad exploration but destroys corridor sequences.</Run>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        </StackPanel>
+                    </local:PlaygroundAnalysisView.ExtraContent>
+                </local:PlaygroundAnalysisView>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</UserControl>

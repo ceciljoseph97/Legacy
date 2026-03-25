@@ -1,0 +1,15 @@
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\bin\Debug\net8.0\NeuroSim.Problems.deps.json
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\bin\Debug\net8.0\NeuroSim.Problems.dll
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\bin\Debug\net8.0\NeuroSim.Problems.pdb
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\bin\Debug\net8.0\NeuroSim.Engine.dll
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\bin\Debug\net8.0\NeuroSim.Engine.pdb
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.Problems.csproj.AssemblyReference.cache
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.Problems.GeneratedMSBuildEditorConfig.editorconfig
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.Problems.AssemblyInfoInputs.cache
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.Problems.AssemblyInfo.cs
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.Problems.csproj.CoreCompileInputs.cache
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.60CAE1C9.Up2Date
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.Problems.dll
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\refint\NeuroSim.Problems.dll
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\NeuroSim.Problems.pdb
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Problems\obj\Debug\net8.0\ref\NeuroSim.Problems.dll

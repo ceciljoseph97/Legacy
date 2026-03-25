@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "requiredDirectories": [
+    "NeuroSim.Engine",
+    "NeuroSim.Problems",
+    "NeuroSim.UI",
+    "NeuroSim.Problems.Tests",
+    "NeuroSim.SystemTests",
+    "docs",
+    "scripts",
+    ".gitlab/issue_templates"
+  ],
+  "requiredDocs": [
+    "README.md",
+    "CHANGELOG.md",
+    "docs/ARCHITECTURE.md",
+    "docs/ADDING_A_PLAYGROUND.md",
+    "docs/OPERATORS.md"
+  ],
+  "unitTestProjects": [
+    "NeuroSim.Problems.Tests/NeuroSim.Problems.Tests.csproj"
+  ],
+  "systemTestProjects": [
+    "NeuroSim.SystemTests/NeuroSim.SystemTests.csproj"
+  ],
+  "minimumDocsMarkdownFilesInDocsDir": 2,
+  "passThreshold": "Good"
+}

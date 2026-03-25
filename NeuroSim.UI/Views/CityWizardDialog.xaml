@@ -1,0 +1,97 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/CityWizardDialog.xaml -->
+<Window x:Class="NeuroSim.UI.Views.CityWizardDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add City" Height="300" Width="340" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" WindowStyle="SingleBorderWindow"
+        Background="#0F0F18" Foreground="#E2E8F0"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="Lbl" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="FontSize"   Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin"     Value="0,0,0,5"/>
+        </Style>
+        <Style x:Key="Fld" TargetType="TextBox">
+            <Setter Property="Background"      Value="#1A1A2E"/>
+            <Setter Property="Foreground"      Value="#E2E8F0"/>
+            <Setter Property="BorderBrush"     Value="#3D3D5C"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding"         Value="8,6"/>
+            <Setter Property="FontSize"        Value="13"/>
+            <Setter Property="CaretBrush"      Value="#A78BFA"/>
+            <Setter Property="SelectionBrush"  Value="#A78BFA"/>
+        </Style>
+        <!-- Dark button template factory -->
+        <ControlTemplate x:Key="DarkBtn" TargetType="Button">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="5" Padding="{TemplateBinding Padding}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Bd" Property="Opacity" Value="0.85"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Bd" Property="Opacity" Value="0.7"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <StackPanel Margin="22,14,22,14">
+
+        <!-- Header -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+            <Rectangle Width="3" Height="18" Fill="#7C3AED" Margin="0,0,9,0" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                       FontSize="15" FontWeight="SemiBold" Foreground="#F1F5F9"/>
+        </StackPanel>
+
+        <!-- City Name -->
+        <TextBlock Text="CITY NAME" Style="{StaticResource Lbl}"/>
+        <TextBox x:Name="NameBox" Style="{StaticResource Fld}" Margin="0,0,0,12"
+                 Text="{Binding CityName, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- X / Y -->
+        <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/><ColumnDefinition Width="12"/><ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="X  (0 – 1000)" Style="{StaticResource Lbl}"/>
+                <TextBox Style="{StaticResource Fld}"
+                         Text="{Binding X, UpdateSourceTrigger=PropertyChanged, StringFormat=F1}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Y  (0 – 1000)" Style="{StaticResource Lbl}"/>
+                <TextBox Style="{StaticResource Fld}"
+                         Text="{Binding Y, UpdateSourceTrigger=PropertyChanged, StringFormat=F1}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Validation -->
+        <TextBlock x:Name="ValMsg" Text="{Binding ValidationMessage}"
+                   Foreground="#EF4444" FontSize="11" TextWrapping="Wrap"
+                   Margin="0,0,0,6" MinHeight="16"/>
+
+        <!-- Buttons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancel" Width="80" Click="OnCancel"
+                    Background="#1A1A2E" Foreground="#94A3B8"
+                    BorderBrush="#2D2D3E" BorderThickness="1"
+                    Padding="0,7" Margin="0,0,10,0" FontSize="12" Cursor="Hand"
+                    Template="{StaticResource DarkBtn}"/>
+            <Button Content="Add City" Width="100" Click="OnConfirm"
+                    Background="#7C3AED" Foreground="White"
+                    BorderThickness="0" Padding="0,7"
+                    FontSize="12" FontWeight="SemiBold" Cursor="Hand"
+                    Template="{StaticResource DarkBtn}"/>
+        </StackPanel>
+
+    </StackPanel>
+</Window>

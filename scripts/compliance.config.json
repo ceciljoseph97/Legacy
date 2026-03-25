@@ -1,0 +1,40 @@
+{
+  "$schemaVersion": 1,
+  "requiredDirectories": [
+    "NeuroSim.Engine",
+    "NeuroSim.Problems",
+    "NeuroSim.UI",
+    "NeuroSim.Problems.Tests",
+    "NeuroSim.SystemTests",
+    "docs",
+    "scripts"
+  ],
+  "docs": {
+    "docsDirectory": "docs",
+    "minMarkdownFiles": 2,
+    "requiredFiles": [
+      "README.md",
+      "CHANGELOG.md",
+      "docs/ARCHITECTURE.md",
+      "docs/ADDING_A_PLAYGROUND.md",
+      "docs/OPERATORS.md"
+    ],
+    "readme": {
+      "minChars": 200,
+      "mustMatchRegex": "NeuroSim|Run it|Tests"
+    },
+    "changelog": {
+      "minChars": 100,
+      "mustMatchRegex": "Changelog|Added|Changed"
+    }
+  },
+  "tests": {
+    "unitTestProjects": [
+      "NeuroSim.Problems.Tests/NeuroSim.Problems.Tests.csproj"
+    ],
+    "systemTestProjects": [
+      "NeuroSim.SystemTests/NeuroSim.SystemTests.csproj"
+    ]
+  }
+}
+

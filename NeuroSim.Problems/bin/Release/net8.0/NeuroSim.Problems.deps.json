@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "NeuroSim.Problems/1.0.0": {
+        "dependencies": {
+          "NeuroSim.Engine": "1.0.0"
+        },
+        "runtime": {
+          "NeuroSim.Problems.dll": {}
+        }
+      },
+      "NeuroSim.Engine/1.0.0": {
+        "runtime": {
+          "NeuroSim.Engine.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NeuroSim.Problems/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NeuroSim.Engine/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

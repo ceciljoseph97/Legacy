@@ -1,0 +1,47 @@
+# AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/.gitlab-ci.yml
+# GitLab-only. This repo uses GitHub Actions: `.github/workflows/legacy-neurosim.yml` (same stages).
+# Build, test, compliance. Compliance fails pipeline if state < Good (tests must pass).
+# Included from repo root `.gitlab-ci.yml`; jobs run in Legacy/ (solution + scripts live here).
+
+.legacy-workdir:
+  before_script:
+    - cd Legacy
+
+stages:
+  - build
+  - test
+  - compliance
+
+build:
+  extends: [.legacy-workdir]
+  stage: build
+  script:
+    - dotnet restore
+    - dotnet build --no-restore -c Release
+  artifacts:
+    paths:
+      - "**/bin/Release/"
+      - "**/obj/Release/"
+    expire_in: 1 hour
+
+unit-tests:
+  extends: [.legacy-workdir]
+  stage: test
+  script:
+    - dotnet test NeuroSim.Problems.Tests/NeuroSim.Problems.Tests.csproj -c Release --no-build --verbosity normal
+  needs: [build]
+
+system-tests:
+  extends: [.legacy-workdir]
+  stage: test
+  script:
+    - dotnet test NeuroSim.SystemTests/NeuroSim.SystemTests.csproj -c Release --no-build --verbosity normal
+  needs: [build]
+
+compliance:
+  extends: [.legacy-workdir]
+  stage: compliance
+  script:
+    # Windows runner (PowerShell) doesn't have bash by default.
+    - powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compliance.ps1
+  needs: [build]

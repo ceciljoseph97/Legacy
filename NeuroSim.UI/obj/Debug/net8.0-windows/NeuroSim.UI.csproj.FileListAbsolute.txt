@@ -1,0 +1,6 @@
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.UI\obj\Debug\net8.0-windows\NeuroSim.UI.csproj.AssemblyReference.cache
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.UI\obj\Debug\net8.0-windows\App.baml
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.UI\obj\Debug\net8.0-windows\App.g.cs
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.UI\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.UI\obj\Debug\net8.0-windows\NeuroSim.UI_MarkupCompile.cache
+D:\Doctorate\unnigham\devNeuroSim\NeuroSim.UI\obj\Debug\net8.0-windows\NeuroSim.UI_MarkupCompile.lref

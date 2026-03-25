@@ -1,0 +1,113 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/CspPlaygroundView.xaml -->
+<UserControl x:Class="NeuroSim.UI.Views.CspPlaygroundView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             Background="{StaticResource BackgroundBrush}" FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- toolbar -->
+        <Border Grid.Row="0" Background="{StaticResource CardDarkBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="16,10">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📦 " FontSize="16" VerticalAlignment="Center"/>
+                    <TextBlock Text="Cutting Stock / Bin Packing" Style="{StaticResource H2}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="▶  Run"   Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Command="{Binding RunCommand}"/>
+                    <Button Content="■  Stop"  Style="{StaticResource DangerButton}"  Margin="0,0,8,0" Command="{Binding StopCommand}"/>
+                    <Button Content="↺  Reset" Style="{StaticResource OutlineButton}" Command="{Binding ResetCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="280"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Config -->
+            <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16">
+                        <TextBlock Style="{StaticResource Label}" Text="DATASET" Margin="0,0,0,6"/>
+                        <ComboBox ItemsSource="{Binding Datasets}" SelectedItem="{Binding SelectedDataset}" DisplayMemberPath="Name"/>
+
+                        <TextBlock Style="{StaticResource Label}" Text="PROBLEM INFO" Margin="0,12,0,6"/>
+                        <TextBlock Text="{Binding ProblemInfo}" Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="11" TextWrapping="Wrap"/>
+
+                        <Separator Margin="0,12"/>
+                        <TextBlock Style="{StaticResource Label}" Text="POPULATION SIZE" Margin="0,0,0,6"/>
+                        <TextBox Text="{Binding PopulationSize, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Style="{StaticResource Label}" Text="MAX GENERATIONS" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding MaxGenerations, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="{Binding MutationRate, StringFormat='MUTATION RATE   {0:P1}'}"
+                                   Style="{StaticResource Label}" Margin="0,12,0,6"/>
+                        <Slider Value="{Binding MutationRate}" Minimum="0" Maximum="0.5" TickFrequency="0.01"/>
+
+                        <Separator Margin="0,12"/>
+                        <TextBlock Style="{StaticResource Label}" Text="CURRENT STATS" Margin="0,0,0,8"/>
+                        <Border Style="{StaticResource StatBadge}" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Text="GENERATION" Style="{StaticResource Label}"/>
+                                <TextBlock Text="{Binding CurrentGeneration}" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentLightBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatBadge}">
+                            <StackPanel>
+                                <TextBlock Text="BINS USED" Style="{StaticResource Label}"/>
+                                <TextBlock Text="{Binding BinsUsedStr}" FontSize="18" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Bin visualisation -->
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="12">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Label}" Text="BIN FILL" Margin="0,12,0,12"/>
+                    <ItemsControl ItemsSource="{Binding BinViews}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding BinIndex, StringFormat='Bin {0}'}"
+                                               Foreground="{StaticResource TextSecondaryBrush}" FontSize="11"
+                                               VerticalAlignment="Center"/>
+                                    <ProgressBar Grid.Column="1" Height="22" Margin="4,0"
+                                                 Minimum="0" Maximum="1"
+                                                 Value="{Binding FillPct}"
+                                                 Background="#1AFFFFFF" BorderThickness="0"
+                                                 Foreground="{Binding BarBrush}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding FillLabel}"
+                                               Foreground="{StaticResource TextSecondaryBrush}" FontSize="11"
+                                               VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Fitness chart -->
+            <oxy:PlotView Grid.Column="2" Model="{Binding FitnessPlot}" Background="Transparent"/>
+        </Grid>
+    </Grid>
+</UserControl>

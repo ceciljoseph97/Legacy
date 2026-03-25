@@ -1,0 +1,63 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/AnalyticsView.xaml -->
+<UserControl x:Class="NeuroSim.UI.Views.AnalyticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- toolbar -->
+            <RowDefinition Height="Auto"/>  <!-- summary -->
+            <RowDefinition Height="*"/>     <!-- table -->
+        </Grid.RowDefinitions>
+
+        <!-- ── Toolbar ───────────────────────────────────────────────── -->
+        <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"
+                Padding="12,8">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Analytics" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <Button Content="⬇  Export CSV"
+                            Style="{StaticResource OutlineButton}"
+                            Command="{Binding ExportCsvCommand}"
+                            Margin="16,0,0,0"/>
+
+            </StackPanel>
+        </Border>
+
+        <!-- ── Summary box ───────────────────────────────────────────── -->
+        <Border Grid.Row="1"
+                Margin="12,10,12,6"
+                Background="#220F3460"
+                BorderBrush="{StaticResource AccentBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="12,8">
+            <TextBlock Text="{Binding SummaryText}"
+                       Style="{StaticResource Body}"
+                       TextWrapping="Wrap"
+                       Foreground="{StaticResource AccentLightBrush}"/>
+        </Border>
+
+        <!-- ── Data grid ─────────────────────────────────────────────── -->
+        <DataGrid Grid.Row="2"
+                  x:Name="StatsGrid"
+                  ItemsSource="{Binding Rows}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserSortColumns="True"
+                  CanUserResizeColumns="True"
+                  Margin="12,4,12,12"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Gen"    Binding="{Binding Gen}"    Width="60"/>
+                <DataGridTextColumn Header="Best"   Binding="{Binding Best}"   Width="110"/>
+                <DataGridTextColumn Header="Mean"   Binding="{Binding Mean}"   Width="110"/>
+                <DataGridTextColumn Header="StdDev" Binding="{Binding StdDev}" Width="90"/>
+                <DataGridTextColumn Header="Worst"  Binding="{Binding Worst}"  Width="110"/>
+                <DataGridTextColumn Header="Evals"  Binding="{Binding Evals}"  Width="80"/>
+                <DataGridTextColumn Header="ms/gen" Binding="{Binding Ms}"     Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

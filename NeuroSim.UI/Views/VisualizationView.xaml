@@ -1,0 +1,96 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/VisualizationView.xaml -->
+<UserControl x:Class="NeuroSim.UI.Views.VisualizationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:v="clr-namespace:NeuroSim.UI.Views"
+             FontFamily="Segoe UI">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>   <!-- stat badges -->
+            <RowDefinition Height="*"/>      <!-- chart OR canvas split -->
+            <RowDefinition Height="160"/>    <!-- diversity chart -->
+            <RowDefinition Height="Auto"/>   <!-- best genome display -->
+        </Grid.RowDefinitions>
+
+        <!-- ── Live stat badges ─────────────────────────────────────────── -->
+        <Grid Grid.Row="0" Margin="16,12,16,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource StatBadge}" Margin="0,0,6,0">
+                <StackPanel>
+                    <TextBlock Text="GENERATION" Style="{StaticResource Label}"/>
+                    <TextBlock Text="{Binding CurrentGeneration}" FontSize="22" FontWeight="Bold"
+                               Foreground="{StaticResource AccentLightBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource StatBadge}" Margin="3,0">
+                <StackPanel>
+                    <TextBlock Text="BEST FITNESS" Style="{StaticResource Label}"/>
+                    <TextBlock Text="{Binding BestFitnessStr}" FontSize="22" FontWeight="Bold"
+                               Foreground="{StaticResource SuccessBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource StatBadge}" Margin="3,0">
+                <StackPanel>
+                    <TextBlock Text="MEAN FITNESS" Style="{StaticResource Label}"/>
+                    <TextBlock Text="{Binding MeanFitnessStr}" FontSize="22" FontWeight="Bold"
+                               Foreground="{StaticResource WarningBrush}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource StatBadge}" Margin="6,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="STD DEV" Style="{StaticResource Label}"/>
+                    <TextBlock Text="{Binding StdDevStr}" FontSize="22" FontWeight="Bold"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ── Main area: fitness chart + optional genome canvas ─────────── -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <oxy:PlotView Model="{Binding FitnessPlotModel}" Margin="8,0,8,8" Background="Transparent"/>
+
+            <!-- Tree/Graph canvas (shown alongside chart when genome has structure) -->
+            <StackPanel Grid.Column="1" Width="220"
+                        Visibility="{Binding ShowGenomeCanvas, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Style="{StaticResource Label}" Margin="4,4,4,4"
+                           Text="{Binding GenomeCanvasLabel}"/>
+                <v:TreeCanvasView x:Name="TreeCanvas" Height="200"
+                                  Genome="{Binding BestTreeGenome}"
+                                  Visibility="{Binding ShowTreeCanvas, Converter={StaticResource BoolToVisibility}}"/>
+                <v:GraphCanvasView x:Name="GraphCanvas" Height="200"
+                                   Genome="{Binding BestGraphGenome}"
+                                   Visibility="{Binding ShowGraphCanvas, Converter={StaticResource BoolToVisibility}}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ── Population diversity chart ───────────────────────────────── -->
+        <oxy:PlotView Grid.Row="2"
+                      Model="{Binding DiversityPlotModel}"
+                      Margin="8,0,8,8"
+                      Background="Transparent"/>
+
+        <!-- ── Best genome display ───────────────────────────────────────── -->
+        <Border Grid.Row="3"
+                Margin="8,0,8,12"
+                Background="{StaticResource CardDarkBrush}"
+                BorderBrush="{StaticResource AccentBrush}"
+                BorderThickness="1" CornerRadius="6" Padding="12,8">
+            <StackPanel>
+                <TextBlock Text="BEST GENOME" Style="{StaticResource Label}"/>
+                <TextBlock Text="{Binding BestGenomeDisplay}"
+                           FontFamily="Consolas" FontSize="12"
+                           Foreground="{StaticResource AccentLightBrush}"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

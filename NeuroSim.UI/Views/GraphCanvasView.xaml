@@ -1,0 +1,12 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/GraphCanvasView.xaml -->
+<UserControl x:Class="NeuroSim.UI.Views.GraphCanvasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#FF0D0D12">
+    <Grid>
+        <Canvas x:Name="DrawCanvas"/>
+        <TextBlock x:Name="EmptyLabel" Text="No graph to display"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Foreground="#FF475569" FontSize="13" FontFamily="Segoe UI"/>
+    </Grid>
+</UserControl>

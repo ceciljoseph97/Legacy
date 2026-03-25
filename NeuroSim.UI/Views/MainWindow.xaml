@@ -1,0 +1,146 @@
+<!-- AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/NeuroSim.UI/Views/MainWindow.xaml -->
+<Window x:Class="NeuroSim.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:NeuroSim.UI.ViewModels"
+        xmlns:v="clr-namespace:NeuroSim.UI.Views"
+        Title="NeuroSim — Evolutionary Simulation Framework"
+        Height="860" Width="1360"
+        MinHeight="640" MinWidth="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <!-- DataTemplates: maps ViewModel → View for ContentControl routing -->
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+            <v:HomePage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProblemSelectorViewModel}">
+            <v:ProblemSelectorView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TspPlaygroundViewModel}">
+            <v:TspPlaygroundView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MazePlaygroundViewModel}">
+            <v:MazePlaygroundView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CspPlaygroundViewModel}">
+            <v:CspPlaygroundView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:GraphPlaygroundViewModel}">
+            <v:GraphPlaygroundView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BlueprintViewModel}">
+            <v:BlueprintEditorView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ExperimentViewModel}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- Page toolbar -->
+                <Border Background="{StaticResource CardDarkBrush}"
+                        BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="16,8">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="▶  Run"   Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Command="{Binding RunCommand}"/>
+                        <Button Content="■  Stop"  Style="{StaticResource DangerButton}"  Margin="0,0,8,0" Command="{Binding StopCommand}"/>
+                        <Button Content="↺  Reset" Style="{StaticResource OutlineButton}" Command="{Binding ResetCommand}"/>
+                    </StackPanel>
+                </Border>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" MinWidth="220" MaxWidth="400"/>
+                        <ColumnDefinition Width="4"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <v:ExperimentSetupView DataContext="{Binding}"/>
+                        </ScrollViewer>
+                    </Border>
+                    <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch"
+                                  Background="{StaticResource BorderBrush}" Opacity="0.5"/>
+                    <TabControl Grid.Column="2" BorderThickness="0">
+                        <TabItem Header="Visualization">
+                            <v:VisualizationView DataContext="{Binding Visualization}"/>
+                        </TabItem>
+                        <TabItem Header="Analytics">
+                            <v:AnalyticsView DataContext="{Binding Analytics}"/>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>   <!-- header -->
+            <RowDefinition Height="*"/>    <!-- content -->
+            <RowDefinition Height="28"/>   <!-- status -->
+        </Grid.RowDefinitions>
+
+        <!-- ── Header ────────────────────────────────────────────────── -->
+        <Border Grid.Row="0"
+                Background="{StaticResource CardDarkBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid Margin="16,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Logo -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="◈ " FontSize="20" Foreground="{StaticResource AccentLightBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="NeuroSim" FontSize="16" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Back + Breadcrumb -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="24,0,0,0">
+                    <Button Content="‹ Back" Style="{StaticResource GhostButton}"
+                            Command="{Binding BackCommand}"
+                            Visibility="{Binding Navigation.CanGoBack, Converter={StaticResource BoolToVisibility}}"
+                            Margin="0,0,8,0"/>
+                    <TextBlock Text="{Binding Navigation.BreadcrumbTitle}"
+                               Foreground="{StaticResource TextMutedBrush}" FontSize="12"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Quick-nav buttons -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="🏠 Home"    Style="{StaticResource GhostButton}" FontSize="12"
+                            Command="{Binding HomeCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ── Page ContentControl ───────────────────────────────────── -->
+        <ContentControl Grid.Row="1"
+                        Content="{Binding Navigation.Current}"
+                        Focusable="False"/>
+
+        <!-- ── Status bar ─────────────────────────────────────────────── -->
+        <Border Grid.Row="2"
+                Background="{StaticResource CardDarkBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,1,0,0">
+            <Grid Margin="12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding StatusText}" Style="{StaticResource Label}" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="NeuroSim v1.0" Style="{StaticResource Label}" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

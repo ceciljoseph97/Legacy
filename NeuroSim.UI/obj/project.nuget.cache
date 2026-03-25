@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "bgBZdoAzZbw=",
+  "success": true,
+  "projectFilePath": "D:\\Doctorate\\unnigham\\NaturalComputeCore\\Legacy\\NeuroSim.UI\\NeuroSim.UI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cecil\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.135\\microsoft.xaml.behaviors.wpf.1.1.135.nupkg.sha512",
+    "C:\\Users\\cecil\\.nuget\\packages\\oxyplot.core\\2.1.2\\oxyplot.core.2.1.2.nupkg.sha512",
+    "C:\\Users\\cecil\\.nuget\\packages\\oxyplot.wpf\\2.1.2\\oxyplot.wpf.2.1.2.nupkg.sha512",
+    "C:\\Users\\cecil\\.nuget\\packages\\oxyplot.wpf.shared\\2.1.2\\oxyplot.wpf.shared.2.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}
