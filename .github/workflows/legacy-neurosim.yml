@@ -1,0 +1,92 @@
+# AUTH:DEVNEUROSIM:7A3F9E2B | .github/workflows/legacy-neurosim.yml
+# NeuroSim (Legacy/) — GitHub Actions equivalent of Legacy/.gitlab-ci.yml
+# windows-latest: WPF (NeuroSim.UI) + compliance.ps1
+
+name: Legacy NeuroSim CI
+
+on:
+  push:
+    paths:
+      - "Legacy/**"
+      - ".github/workflows/legacy-neurosim.yml"
+  pull_request:
+    paths:
+      - "Legacy/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: Legacy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+      - run: dotnet restore
+      - run: dotnet build --no-restore -c Release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: legacy-neurosim-build
+          path: |
+            Legacy/**/bin/Release/**
+            Legacy/**/obj/Release/**
+          retention-days: 1
+
+  unit-tests:
+    runs-on: windows-latest
+    needs: build
+    defaults:
+      run:
+        working-directory: Legacy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: legacy-neurosim-build
+          path: ${{ github.workspace }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+      - run: dotnet test NeuroSim.Problems.Tests/NeuroSim.Problems.Tests.csproj -c Release --no-build --verbosity normal
+
+  system-tests:
+    runs-on: windows-latest
+    needs: build
+    defaults:
+      run:
+        working-directory: Legacy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: legacy-neurosim-build
+          path: ${{ github.workspace }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+      - run: dotnet test NeuroSim.SystemTests/NeuroSim.SystemTests.csproj -c Release --no-build --verbosity normal
+
+  compliance:
+    runs-on: windows-latest
+    needs: build
+    defaults:
+      run:
+        working-directory: Legacy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+      - name: Compliance
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compliance.ps1
