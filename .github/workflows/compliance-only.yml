@@ -1,0 +1,21 @@
+# AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/.github/workflows/compliance-only.yml
+# Manual rerun of scripts/compliance.sh (build + doc/dir checks + unit/system tests).
+
+name: NeuroSim compliance
+
+on:
+  workflow_dispatch:
+
+jobs:
+  compliance:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+      - name: Compliance (bash)
+        shell: bash
+        run: bash scripts/compliance.sh

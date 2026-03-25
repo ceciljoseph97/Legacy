@@ -1,5 +1,6 @@
 # AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/.gitlab-ci.yml
-# GitLab-only. This repo uses GitHub Actions: `.github/workflows/legacy-neurosim.yml` (same stages).
+# GitHub: standalone Legacy repo → `Legacy/.github/workflows/neurosim-ci.yml` (+ compliance.sh).
+# Monorepo parent → root `.github/workflows/legacy-neurosim.yml`.
 # Build, test, compliance. Compliance fails pipeline if state < Good (tests must pass).
 # Included from repo root `.gitlab-ci.yml`; jobs run in Legacy/ (solution + scripts live here).
 

@@ -1,25 +1,19 @@
-# AUTH:DEVNEUROSIM:7A3F9E2B | .github/workflows/legacy-neurosim.yml
-# NeuroSim (Legacy/) — GitHub Actions equivalent of Legacy/.gitlab-ci.yml
-# windows-latest: WPF (NeuroSim.UI) + compliance.ps1
+# AUTH:DEVNEUROSIM:7A3F9E2B | Legacy/.github/workflows/neurosim-ci.yml
+# GitHub Actions mirror of Legacy/.gitlab-ci.yml; compliance via scripts/compliance.sh (bash).
+# windows-latest: WPF (NeuroSim.UI). Bash is Git for Windows on the runner.
 
-name: Legacy NeuroSim CI
+name: NeuroSim CI
 
 on:
   push:
-    paths:
-      - "Legacy/**"
-      - ".github/workflows/legacy-neurosim.yml"
+    branches: [main, master]
   pull_request:
-    paths:
-      - "Legacy/**"
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: Legacy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -31,23 +25,20 @@ jobs:
       - run: dotnet build --no-restore -c Release
       - uses: actions/upload-artifact@v4
         with:
-          name: legacy-neurosim-build
+          name: neurosim-build
           path: |
-            Legacy/**/bin/Release/**
-            Legacy/**/obj/Release/**
+            **/bin/Release/**
+            **/obj/Release/**
           retention-days: 1
 
   unit-tests:
     runs-on: windows-latest
     needs: build
-    defaults:
-      run:
-        working-directory: Legacy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: legacy-neurosim-build
+          name: neurosim-build
           path: ${{ github.workspace }}
       - uses: actions/setup-dotnet@v4
         with:
@@ -59,14 +50,11 @@ jobs:
   system-tests:
     runs-on: windows-latest
     needs: build
-    defaults:
-      run:
-        working-directory: Legacy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: legacy-neurosim-build
+          name: neurosim-build
           path: ${{ github.workspace }}
       - uses: actions/setup-dotnet@v4
         with:
@@ -78,9 +66,6 @@ jobs:
   compliance:
     runs-on: windows-latest
     needs: build
-    defaults:
-      run:
-        working-directory: Legacy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -88,5 +73,6 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
-      - name: Compliance
-        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/compliance.ps1
+      - name: Compliance (bash)
+        shell: bash
+        run: bash scripts/compliance.sh
