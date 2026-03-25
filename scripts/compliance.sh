@@ -17,21 +17,23 @@ CFG_FILE="${COMPLIANCE_CONFIG:-$ROOT/compliance.config.json}"
 # This avoids requiring jq/python/node on CI images.
 json_array() {
   local key="$1"
+  # CRLF: strip \r before matching; close array only on a line that is just ], (not any stray ]).
   awk -v k="\"$key\"" '
+    { sub(/\r$/, "") }
     $0 ~ k"[[:space:]]*:[[:space:]]*\\[" { inarr=1; next }
-    inarr && $0 ~ /\\]/ { inarr=0; exit }
+    inarr && $0 ~ /^[[:space:]]*\][[:space:]]*,?[[:space:]]*$/ { inarr=0; exit }
     inarr { print }
-  ' "$CFG_FILE" | sed -n 's/.*"\([^"]\+\)".*/\1/p'
+  ' "$CFG_FILE" | sed -n 's/.*"\([^"]\+\)".*/\1/p' | tr -d '\r' | sed '/^$/d'
 }
 
 json_number() {
   local key="$1"
-  sed -n "s/.*\"$key\"[[:space:]]*:[[:space:]]*\\([0-9][0-9]*\\).*/\\1/p" "$CFG_FILE" | head -n 1
+  tr -d '\r' < "$CFG_FILE" | sed -n "s/.*\"$key\"[[:space:]]*:[[:space:]]*\\([0-9][0-9]*\\).*/\\1/p" | head -n 1
 }
 
 json_string() {
   local key="$1"
-  sed -n "s/.*\"$key\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p" "$CFG_FILE" | head -n 1
+  tr -d '\r' < "$CFG_FILE" | sed -n "s/.*\"$key\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p" | head -n 1
 }
 
 # Fail fast if config missing
@@ -47,7 +49,11 @@ docs_populated() {
   [[ -d docs ]] || return 1
   local min="$(json_number minimumDocsMarkdownFilesInDocsDir)"
   [[ -z "$min" ]] && min=2
-  [[ $(find docs -maxdepth 1 -name "*.md" 2>/dev/null | wc -l) -ge "$min" ]]
+  local n=0
+  shopt -s nullglob
+  for _ in docs/*.md; do [[ -f "$_" ]] && n=$((n + 1)); done
+  shopt -u nullglob
+  [[ "$n" -ge "$min" ]]
 }
 
 readme_done() {

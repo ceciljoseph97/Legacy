@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NeuroSim.Problems")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e4d1efb21cdc2eafd07b0005b4f202925a43fd73")]
 [assembly: System.Reflection.AssemblyProductAttribute("NeuroSim.Problems")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NeuroSim.Problems")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

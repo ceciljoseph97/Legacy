@@ -8,7 +8,7 @@
     "NeuroSim.SystemTests",
     "docs",
     "scripts",
-    ".gitlab/issue_templates"
+    ".github"
   ],
   "requiredDocs": [
     "README.md",

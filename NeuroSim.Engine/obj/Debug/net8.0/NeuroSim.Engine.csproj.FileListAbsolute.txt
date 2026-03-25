@@ -9,3 +9,15 @@ D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engi
 D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Engine\obj\Debug\net8.0\refint\NeuroSim.Engine.dll
 D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.pdb
 D:\Doctorate\unnigham\devNeuroSim\NeuroSim.Engine\obj\Debug\net8.0\ref\NeuroSim.Engine.dll
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\bin\Debug\net8.0\NeuroSim.Engine.deps.json
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\bin\Debug\net8.0\NeuroSim.Engine.dll
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\bin\Debug\net8.0\NeuroSim.Engine.pdb
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.GeneratedMSBuildEditorConfig.editorconfig
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.AssemblyInfoInputs.cache
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.AssemblyInfo.cs
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.csproj.CoreCompileInputs.cache
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.sourcelink.json
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.dll
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\refint\NeuroSim.Engine.dll
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\NeuroSim.Engine.pdb
+D:\Doctorate\unnigham\NaturalComputeCore\Legacy\NeuroSim.Engine\obj\Debug\net8.0\ref\NeuroSim.Engine.dll

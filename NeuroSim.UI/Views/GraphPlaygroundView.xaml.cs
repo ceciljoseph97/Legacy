@@ -54,7 +54,6 @@ public sealed class DagEditorCanvas : FrameworkElement
     // ── Interaction state ─────────────────────────────────────────────────
     private int  _dragNodeId  = -1;
     private int  _edgeSrcId   = -1;   // for edge drawing
-    private bool _isDragging;
     private Point _edgeEndPt;          // current mouse position for in-progress edge
 
     // ── Brushes / pens ────────────────────────────────────────────────────
@@ -108,13 +107,11 @@ public sealed class DagEditorCanvas : FrameworkElement
         {
             _edgeSrcId  = hit;
             _edgeEndPt  = pos;
-            _isDragging = true;
             CaptureMouse();
         }
         else if (!AddEdgeMode && hit >= 0)
         {
             _dragNodeId = hit;
-            _isDragging = false;
             CaptureMouse();
         }
         else if (!AddEdgeMode && hit < 0)
@@ -134,10 +131,7 @@ public sealed class DagEditorCanvas : FrameworkElement
             InvalidateVisual();
         }
         else if (!AddEdgeMode && _dragNodeId >= 0)
-        {
-            _isDragging = true;
             GetVM()?.MoveNode(_dragNodeId, pos.X, pos.Y);
-        }
     }
 
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -151,12 +145,10 @@ public sealed class DagEditorCanvas : FrameworkElement
             if (hit >= 0 && hit != _edgeSrcId)
                 GetVM()?.AddEdge(_edgeSrcId, hit);
             _edgeSrcId  = -1;
-            _isDragging = false;
             InvalidateVisual();
         }
 
         _dragNodeId = -1;
-        _isDragging = false;
         ReleaseMouseCapture();
     }
 
